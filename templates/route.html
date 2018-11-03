@@ -110,7 +110,17 @@
         var current = hotel;
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 17,
-          center: hotel
+          center: hotel,
+          styles: [
+            {
+            featureType: 'poi',
+            stylers: [{visibility: 'off'}]
+          },
+          {
+            featureType: 'transit',
+            elementType: 'labels.icon',
+            stylers: [{visibility: 'off'}]
+          }]
         });
       
         
@@ -168,7 +178,7 @@
                 fillOpacity: 0.0,
                 map: map,
                 center: location,
-                radius: 30
+                radius: 40
               });
               circles.push(locationCircle);
 
