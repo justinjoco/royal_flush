@@ -77,10 +77,19 @@
     <div>
     <strong>Mode of Travel: </strong>
     <select id="mode">
-      <option value="DRIVING">Driving</option>
+      
       <option value="WALKING">Walking</option>
+      <option value="DRIVING">Driving</option>
       <option value="BICYCLING">Bicycling</option>
       <option value="TRANSIT">Transit</option>
+    </select>
+    </div>
+
+    <div>
+    <strong>Play Game?</strong>
+    <select id="markerMode">
+      <option value="OFF">On</option>
+      <option value="ON">Off</option>
     </select>
     </div>
 
@@ -95,9 +104,10 @@
 
 
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
         var hotel = new google.maps.LatLng(39.945376, -75.141281);
         var center = new google.maps.LatLng(39.950242, -75.145664);
+        var current = hotel;
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 17,
           center: hotel
@@ -144,18 +154,18 @@
              
         
             var infowindows = [];
-
+            var markers = [];
             for (var i = 0; i<data.length; i++){
               
               var location = {lat: data[i].latitude, lng: data[i].longitude};
               var point = new google.maps.Marker({position: location, map: map, draggable: false});
-
+              markers.push(point);
               var locationCircle = new google.maps.Circle({
                 strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
+                strokeOpacity: 0.0,
                 strokeWeight: 2,
                 fillColor:'#FF0000',
-                fillOpacity: 0.1,
+                fillOpacity: 0.0,
                 map: map,
                 center: location,
                 radius: 30
@@ -170,41 +180,93 @@
               infowindows.push(infowindow);
 
             }
+            console.log(markers);
+            visibility = "OFF";
+            changeMarkerVisibility(markers, visibility);
+        
+            document.getElementById('markerMode').addEventListener('change', function() {
+              visibility = document.getElementById('markerMode').value;
+   
+              changeMarkerVisibility(markers, visibility)
+            });
+
+
           google.maps.event.addListener(marker, 'dragend', function() {
             latLng = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+            
+
+            inside = google.maps.geometry.spherical.computeDistanceBetween(cityCircle.getCenter(), latLng) <= cityCircle.getRadius();
+            if(inside === true){
+                directionsDisplay.set('directions', null);
+              }
+              else{
+                current = {lat:marker.position.lat(), lng:marker.position.lng()};
+                calculateAndDisplayRoute(directionsService, directionsDisplay, current);
+            }
+
+
             
             for (i = 0; i<circles.length; i++){
 
               inside = google.maps.geometry.spherical.computeDistanceBetween(circles[i].getCenter(), latLng) <= circles[i].getRadius();
-                console.log(inside);
+             
               if (inside === true){
                 infowindows[i].open(map, marker);
               }
               else{
                 infowindows[i].close();
               }
+
+
+
+
+
           }
-         
 
-         });
+           
 
+        });
+        console.log(markers);
+        
 
 
         });
      
      
-        calculateAndDisplayRoute(directionsService, directionsDisplay);
+        calculateAndDisplayRoute(directionsService, directionsDisplay, hotel);
+
         document.getElementById('mode').addEventListener('change', function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay);
+          calculateAndDisplayRoute(directionsService, directionsDisplay, current);
         });
+
+        
+
+        function changeMarkerVisibility(markers, visibility){
+          var visible = false;
+          if (visibility === "ON"){
+            visible = true;
+          }
+          else{
+            visible = false;
+          }
+          console.log(markers);
+          for (i = 0; i<markers.length; i++){
+            console.log(markers[i]);
+            markers[i].setVisible(visible);
+
+          }
+
+        }
 /*
+        
+
         document.getElementById('start').addEventListener('change', onChangeHandler);
         document.getElementById('end').addEventListener('change', onChangeHandler);
-  */      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  */    function calculateAndDisplayRoute(directionsService, directionsDisplay, current) {
         
         var selectedMode = document.getElementById('mode').value;
         var request = {
-            origin: hotel,
+            origin: current,
             destination: center,
             // Note that Javascript allows us to access the constant
             // using square brackets and a string value as its
