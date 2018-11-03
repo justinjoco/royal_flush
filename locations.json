@@ -3,79 +3,79 @@
     {
       "address": "239 Arch St. Philadelphia, PA 19106",
       "latitude": 39.9522,
-      "longitude": 75.1446,
+      "longitude": -75.1446,
       "name": "Betsy Ross House"
     },
     {
       "address": "520 Chestnut St. Philadelphia, PA 19106",
       "latitude": 39.9489,
-      "longitude": 75.15,
+      "longitude": -75.15,
       "name": "Independence Hall"
     },
     {
       "address": "Elfreth's Alley, Philadelphia, PA 19106",
       "latitude": 39.9527,
-      "longitude": 75.1424,
+      "longitude": -75.1424,
       "name": "Elfreth's Alley"
     },
     {
       "address": "N 6th St & Market Street, Philadelphia, PA 19106",
       "latitude": 39.9496,
-      "longitude": 75.1503,
+      "longitude": -75.1503,
       "name": "Liberty Bell"
     },
     {
       "address": "151 N Independence Mall E, Philadelphia, PA 19106",
       "latitude": 39.9534,
-      "longitude": 75.1474,
+      "longitude": -75.1474,
       "name": "United States Mint"
     },
     {
       "address": "101 S 3rd St. Philadelphia, PA 19106",
       "latitude": 39.9485,
-      "longitude": 75.1459,
+      "longitude": -75.1459,
       "name": "Museum of the American Revolution"
     },
     {
       "address": "40 N 2nd St. Philadelphia, PA 19106",
       "latitude": 39.9511,
-      "longitude": 75.1436,
+      "longitude": -75.1436,
       "name": "Arden Theatre Company"
     },
     {
       "address": "116 Market St. Philadelphia, PA 19106",
       "latitude": 39.9497,
-      "longitude": 75.1429,
+      "longitude": -75.1429,
       "name": "The Franklin Fountain"
     },
     {
       "address": "510-520 Chestnut St. Philadelphia, PA 19106",
       "latitude": 39.9490,
-      "longitude": 75.1500,
+      "longitude": -75.1500,
       "name": "Washington Statue"
     },
     {
       "address": "116 N 3rd St. Philadelphia, PA 19106",
       "latitude": 39.9526,
-      "longitude": 75.1452,
+      "longitude": -75.1452,
       "name": "Art in the Age"
     },
     {
       "address": "139 N 2nd St. Philadelphia, PA 19106",
       "latitude": 39.9531,
-      "longitude": 75.1429,
+      "longitude": -75.1429,
       "name": "The Clay Studio"
     },
     {
       "address": "325 Chestnut St. Philadelphia, PA 19106",
       "latitude": 39.9489,
-      "longitude": 75.1472,
+      "longitude": -75.1472,
       "name": "Buddakan"
     },
     {
       "address": "233 Chestnut St. Philadelphia, PA 19106",
       "latitude": 39.9487,
-      "longitude": 75.1454,
+      "longitude": -75.1454,
       "name": "Capofitto Forno"
     }
   ]
