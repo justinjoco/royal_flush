@@ -93,6 +93,13 @@
     </select>
     </div>
 
+    <strong>Return to Hilton?</strong>
+    <select id="returnMode">
+      <option value="OFF">No</option>
+      <option value="ON">Yes</option>
+    </select>
+    </div>
+
     <div id="map"></div>
 	
 
@@ -104,10 +111,11 @@
 
 
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
+        var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true, preserveViewport: true});
         var hotel = new google.maps.LatLng(39.945376, -75.141281);
         var center = new google.maps.LatLng(39.950242, -75.145664);
         var current = hotel;
+
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 17,
           center: hotel,
@@ -121,7 +129,8 @@
             featureType: 'transit',
             elementType: 'labels.icon',
             stylers: [{visibility: 'off'}]
-          }]
+          }],
+          zoomControl:false
 
           
         });
@@ -206,17 +215,49 @@
 
           google.maps.event.addListener(marker, 'dragend', function() {
             latLng = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+            returnVal = document.getElementById('returnMode').value;
             
+            current = {lat:marker.position.lat(), lng:marker.position.lng()};
+            if (returnVal === "OFF"){
+              destination = center;
+              
+            inside = google.maps.geometry.spherical.computeDistanceBetween(cityCircle.getCenter(), latLng) <= cityCircle.getRadius();
 
+            if(inside === true){
+                directionsDisplay.set('directions', null);
+              }
+              else{
+
+                
+                calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination);
+            }
+
+
+            }
+
+
+
+            else{
+              destination = hotel;
+            
+              current = {lat:marker.position.lat(), lng:marker.position.lng()};
+              calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination);
+
+
+            }
+
+
+/*
             inside = google.maps.geometry.spherical.computeDistanceBetween(cityCircle.getCenter(), latLng) <= cityCircle.getRadius();
             if(inside === true){
                 directionsDisplay.set('directions', null);
               }
               else{
-                current = {lat:marker.position.lat(), lng:marker.position.lng()};
-                calculateAndDisplayRoute(directionsService, directionsDisplay, current);
-            }
 
+                current = {lat:marker.position.lat(), lng:marker.position.lng()};
+                calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination);
+            }
+*/
 
             
             for (i = 0; i<circles.length; i++){
@@ -246,10 +287,31 @@
         });
      
      
-        calculateAndDisplayRoute(directionsService, directionsDisplay, hotel);
+        calculateAndDisplayRoute(directionsService, directionsDisplay, hotel, center);
 
         document.getElementById('mode').addEventListener('change', function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay, current);
+          returnVal = document.getElementById('returnMode').value;
+          if (returnVal === "OFF"){
+            destination = center;
+          }
+          else{
+            destination = hotel;
+          }
+
+          calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination);
+        });
+
+        document.getElementById('returnMode').addEventListener('change', function() {
+          
+          returnVal = document.getElementById('returnMode').value;
+          if (returnVal === "OFF"){
+            destination = center;
+          }
+          else{
+            destination = hotel;
+          }
+
+          calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination);
         });
 
         
@@ -275,12 +337,12 @@
 
         document.getElementById('start').addEventListener('change', onChangeHandler);
         document.getElementById('end').addEventListener('change', onChangeHandler);
-  */    function calculateAndDisplayRoute(directionsService, directionsDisplay, current) {
+  */    function calculateAndDisplayRoute(directionsService, directionsDisplay, current, destination) {
         
         var selectedMode = document.getElementById('mode').value;
         var request = {
             origin: current,
-            destination: center,
+            destination: destination,
             // Note that Javascript allows us to access the constant
             // using square brackets and a string value as its
             // "property."
