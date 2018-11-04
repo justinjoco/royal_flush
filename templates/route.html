@@ -86,10 +86,10 @@
     </div>
 
     <div>
-    <strong>Play Game?</strong>
+    <strong>Quest?</strong>
     <select id="markerMode">
-      <option value="OFF">On</option>
-      <option value="ON">Off</option>
+      <option value="OFF">Yes</option>
+      <option value="ON">No</option>
     </select>
     </div>
 
@@ -111,6 +111,7 @@
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 17,
           center: hotel,
+          
           styles: [
             {
             featureType: 'poi',
@@ -121,6 +122,8 @@
             elementType: 'labels.icon',
             stylers: [{visibility: 'off'}]
           }]
+
+          
         });
       
         
